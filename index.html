@@ -44,7 +44,7 @@ background-repeat:no-repeat;
  }
 </style>
 </head>
-<body onload="pegarSel(); statusCache(); invisivel();">
+<body onload="pegarSel(); statusCache();">
 <br>
 <div class="invisivel">
 <h1 style='font-size:25px;text-align:center;'><u><font color="#49c179">JAILBREAK + </font></u>
@@ -82,14 +82,6 @@ function DisplayCacheProgress(){setTimeout(function(){window.msgs.innerHTML="<fo
 <script src="exp_common.js"></script>
 <script src="exp_jailbreak.js"></script>
 <h1 id=msgs style='font-size:25px;text-align:center;color:#6089f6'>PS4 MENU JAILBREAK <font style='color:#ee596f;'>6.72</font></h1>
-
-
-
-<h1 id=msgs2 style='font-size:25px;text-align:center;color:#6089f6'></font>STATUS DA Cache AQUI</h1>
-
-
-
-
 <hr width="60%" size="1" color="#ff5757">
 <div class="invisivel" style="text-align:center">
 <font size="3">Pressione o <font color="#ee596f"><b>CIRCULO<b></font> para sair.</font>
@@ -196,16 +188,15 @@ default:document.getElementById("msgs").innerHTML = "erro";
 
 
 
-function invisivel() {
-  var appCache = window.applicationCache;
-  if(appCache.status == appCache.UNCACHED){
+function statusCache(){
+var appCache = window.applicationCache;
+switch (appCache.status) {
+  case appCache.UNCACHED: // UNCACHED == 0
+    document.getElementById("msgs2").innerHTML = "UNCACHED";
     var elementos = document.querySelectorAll(".invisivel");	
 	for (var i = 0; i < elementos.length; i++) {
-		elementos[i].style.display = 'none';	   
-    }
-  }	
-}
-	
+		elementos[i].style.display = 'none';};break;};	
+}	
 
 	
 	
