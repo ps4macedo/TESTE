@@ -49,7 +49,6 @@ background-repeat:no-repeat;
 <div class="invisivel">
 <h1 style='font-size:25px;text-align:center;'><u><font color="#49c179">JAILBREAK + </font></u>
 <br>
-
 <font size="4">Selecione o <font color="#ee596f">EXPLOIT</font> para desbloqueio <font color="#ee596f">AUTOMÁTICO</font> aqui: </font>
 <select id="exp" onChange="selHen()" style="font-size:16px;height:30px;width:100px;background-color:transparent;color:6089f6">
 <option value="man" selected>Manual</option>
@@ -192,10 +191,25 @@ function statusCache(){
 var appCache = window.applicationCache;
 switch (appCache.status) {
   case appCache.UNCACHED: // UNCACHED == 0
-    document.getElementById("msgs2").innerHTML = "UNCACHED";
     var elementos = document.querySelectorAll(".invisivel");	
 	for (var i = 0; i < elementos.length; i++) {
-		elementos[i].style.display = 'none';};break;};	
+		elementos[i].style.display = 'none';
+	};
+  break;
+  case appCache.IDLE: // IDLE == 1
+    document.getElementById("msgs2").innerHTML = "IDLE";
+    break;
+  case appCache.CHECKING: // CHECKING == 2
+    break;
+  case appCache.DOWNLOADING: // DOWNLOADING == 3
+    break;
+  case appCache.UPDATEREADY:  // UPDATEREADY == 4
+    break;
+  case appCache.OBSOLETE: // OBSOLETE == 5
+    break;
+  default:
+    break;
+}
 }	
 
 	
