@@ -189,9 +189,9 @@ default:document.getElementById("msgs").innerHTML = "erro";
 
 function statusCache(){
 var appCache = window.applicationCache;
+var elementos = document.querySelectorAll(".invisivel");	
 switch (appCache.status) {
   case appCache.UNCACHED: // UNCACHED == 0
-    var elementos = document.querySelectorAll(".invisivel");	
 	for (var i = 0; i < elementos.length; i++) {
 		elementos[i].style.display = 'none';
 	};
