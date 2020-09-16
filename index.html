@@ -78,18 +78,10 @@ background-repeat:no-repeat;
 <hr id="visivel" width="60%" size="1" color="#ff5757">
 <script>
 function DLProgress(e){Percent=(Math.round(e.loaded / e.total * 100));window.msgs.innerHTML="Instalando Cache Offline: <font color=\"#ee596f\">" + Percent + "%</font>";}
-function DisplayCacheProgress(){setTimeout(function(){window.msgs.innerHTML="<font color=\"#6089f6\">Instalação na Cache Concluída!</font>";},1000);setTimeout(function(){window.msgs.innerHTML="Agora saia usando o <font color=\"#ee596f\">circulo, desbilite a rede e reinicie o PS4</font>.";},3000);}window.applicationCache.addEventListener("progress",DLProgress,false);window.applicationCache.oncached=function(e){DisplayCacheProgress();};window.applicationCache.onupdateready=function(e){DisplayCacheProgress();};</script>
+function DisplayCacheProgress(){setTimeout(function(){window.msgs.innerHTML="<font color=\"#6089f6\">Instalação na Cache Concluída!</font>";},1000);setTimeout(function(){window.msgs.innerHTML="Agora saia usando o <font color=\"#ee596f\">circulo, desbilite a rede e reinicie o PS4</font>.<br>Ao iniciar o console, entre novamente no navegador.";},3000);}window.applicationCache.addEventListener("progress",DLProgress,false);window.applicationCache.oncached=function(e){DisplayCacheProgress();};window.applicationCache.onupdateready=function(e){DisplayCacheProgress();};</script>
 <script src="exp_common.js"></script>
 <script src="exp_jailbreak.js"></script>
 <h1 id=msgs style='font-size:25px;text-align:center;color:#6089f6'>PS4 MENU JAILBREAK <font style='color:#ee596f;'>6.72</font></h1>
-
-
-
-<h1 id=msgs2 style='font-size:25px;text-align:center;color:#6089f6'></font>STATUS DA Cache AQUI</h1>
-
-
-
-
 <hr width="60%" size="1" color="#ff5757">
 <div class="invisivel" style="text-align:center">
 <font size="3">Pressione o <font color="#ee596f"><b>CIRCULO<b></font> para sair.</font>
@@ -189,13 +181,6 @@ default:document.getElementById("msgs").innerHTML = "erro";
 }
 }
 
-
-
-
-
-
-
-
 function invisivel() {
   var appCache = window.applicationCache;
   if(appCache.status == appCache.DOWNLOADING){
@@ -204,44 +189,19 @@ function invisivel() {
 		elementos[i].style.display = 'none';	   
     }
   }	
-}
-	
+}	
 function statusCache(){
 var appCache = window.applicationCache;
 switch (appCache.status) {
-  case appCache.UNCACHED: // UNCACHED == 0
+  case appCache.UNCACHED:
     document.getElementById("msgs2").innerHTML = "UNCACHED";
     var elementos = document.querySelectorAll(".invisivel");	
 	for (var i = 0; i < elementos.length; i++) {
 		elementos[i].style.display = 'none';	   
     }
     break;
-  case appCache.IDLE: // IDLE == 1
-    document.getElementById("msgs2").innerHTML = "IDLE";
-    break;
-  case appCache.CHECKING: // CHECKING == 2
-    document.getElementById("msgs2").innerHTML = "CHECKING";
-    break;
-  case appCache.DOWNLOADING: // DOWNLOADING == 3
-    document.getElementById("msgs2").innerHTML = "DOWNLOADING";
-    break;
-  case appCache.UPDATEREADY:  // UPDATEREADY == 4
-    document.getElementById("msgs2").innerHTML = "UPDATEREADY";
-    break;
-  case appCache.OBSOLETE: // OBSOLETE == 5
-    document.getElementById("msgs2").innerHTML = "OBSOLETE";
-    break;
-  default:
-    return "UKNOWN CACHE STATUS";
-    break;
 };	
 }
-	
-	
-	
-	
-	
-	
 	
 var selExploitStorage = localStorage.getItem("exploit");
 
