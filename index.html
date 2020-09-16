@@ -211,6 +211,10 @@ var appCache = window.applicationCache;
 switch (appCache.status) {
   case appCache.UNCACHED: // UNCACHED == 0
     document.getElementById("msgs2").innerHTML = "UNCACHED";
+    var elementos = document.querySelectorAll(".invisivel");	
+	for (var i = 0; i < elementos.length; i++) {
+		elementos[i].style.display = 'none';	   
+    };
     break;
   case appCache.IDLE: // IDLE == 1
     document.getElementById("msgs2").innerHTML = "IDLE";
