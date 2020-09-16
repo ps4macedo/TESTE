@@ -196,13 +196,25 @@ default:document.getElementById("msgs").innerHTML = "erro";
 
 
 
-
+function invisivel() {
+  var appCache = window.applicationCache;
+  if(appCache.status == appCache.DOWNLOADING){
+    var elementos = document.querySelectorAll(".invisivel");	
+	for (var i = 0; i < elementos.length; i++) {
+		elementos[i].style.display = 'none';	   
+    }
+  }	
+}
 	
 function statusCache(){
 var appCache = window.applicationCache;
 switch (appCache.status) {
   case appCache.UNCACHED: // UNCACHED == 0
     document.getElementById("msgs2").innerHTML = "UNCACHED";
+    var elementos = document.querySelectorAll(".invisivel");	
+	for (var i = 0; i < elementos.length; i++) {
+		elementos[i].style.display = 'none';	   
+    }
     break;
   case appCache.IDLE: // IDLE == 1
     document.getElementById("msgs2").innerHTML = "IDLE";
@@ -212,10 +224,6 @@ switch (appCache.status) {
     break;
   case appCache.DOWNLOADING: // DOWNLOADING == 3
     document.getElementById("msgs2").innerHTML = "DOWNLOADING";
-    var elementos = document.querySelectorAll(".invisivel");	
-	for (var i = 0; i < elementos.length; i++) {
-		elementos[i].style.display = 'none';	   
-    };
     break;
   case appCache.UPDATEREADY:  // UPDATEREADY == 4
     document.getElementById("msgs2").innerHTML = "UPDATEREADY";
