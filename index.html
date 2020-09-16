@@ -198,7 +198,7 @@ default:document.getElementById("msgs").innerHTML = "erro";
 
 function invisivel() {
   var appCache = window.applicationCache;
-  if(appCache.status == 3){
+  if(appCache.status == appCache.DOWNLOADING){
     var elementos = document.querySelectorAll(".invisivel");	
 	for (var i = 0; i < elementos.length; i++) {
 		elementos[i].style.display = 'none';	   
