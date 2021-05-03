@@ -1,481 +1,62 @@
-<html manifest="cache.manifest">
-<head>
-<title>Exploit 6.72</title>
-<style>
-body{
-color: white;
-background-image:url(bg1.png);
-background-attachment: fixed;
-background-size:100%;
-background-repeat:no-repeat;
-}	
-	
-.button:focus, .button::-moz-focus-inner{
-  outline:none;
-  border:none;
-}
-.button{
-  font-family: arial;
-  font-size:14px;
-  text-transform: uppercase;
-  font-weight:700;
-  border:2px solid #404040;
-  border-radius: 4px;
-  padding:10px;
-  cursor: pointer;
-  display:inline-block;
-  text-decoration: none;
-  background:transparent;
-  color:#d4d7d8;
-  box-shadow:0 5px 0 #878787;
-}
-.button:hover{
-  background:#242424;
-  border:2px solid #ffffff;
-  box-shadow:0 5px 0 #cccccc;
-  color:white;
-}
-.button:active{
-  background:#ee596f;
-  position:relative;
-  color:black;
-  top:5px;
-  box-shadow:none;
- }
+<html>
+<body onload="go()">
+    <style>
+    body{
+        background-color: #141414; 
+        color: white;
+    }
+    
 </style>
-</head>
-<body onload="pegarSel(); statusCache(); invisivel();">
-<br>
-<div class="invisivel">
-<h1 style='font-size:25px;text-align:center;'><u><font color="#49c179">JAILBREAK + </font></u>
-<br>
+<script>
+function print(){}
 
-<font size="4">Selecione o <font color="#ee596f">EXPLOIT</font> para desbloqueio <font color="#ee596f">AUTOMÁTICO</font> aqui: </font>
-<select id="exp" onChange="selHen()" style="font-size:16px;height:30px;width:100px;background-color:transparent;color:6089f6">
-<option value="man" selected>Manual</option>
-<option value="h225">HEN 2261</option>
-<option value="h224">HEN 225</option>
-<option value="h213b">HEN 213B</option>
-<option value="h213">HEN 213</option>
-<option value="m">Mira</option>
-<option value="mnof">Mira NOF</option>
-<option value="mshb">Mira SHB</option>
+var scriptCode = '';
+
+function preloadScripts(lst)
+{
+    for(var i = 0; i < lst.length; i++)
+    {
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', lst[i], false);
+        xhr.send('');
+        scriptCode += xhr.responseText + '\n';
+    }
+}
+
+function done()
+{
+    if(main_ret == 0 || main_ret == 179)
+    {
+       alert("\n \n P R O N T O ! ! !\n \n A T E N Ç Ã O ! ! ! Aguarde as mensagens.\n  Depois fique pressionando o botão \"CIRCULO (VERMELHO)\" até sair do navegador.");
+       read_ptr_at(0);
+    }
+    else
+        alert("Jailbreak FALHOU! Reinicie o PS4 sem sair dessa tela, usando o botão \"PS\" \n e tente novamente.");
+}
+
+window.midExploit = function()
+{
+    //preloadScripts(['../blob.js', '../jb.js', 'netcat.js'], go);
+    preloadScripts(['750.js', 'c-code.js', 'loader-755.js', 'hen.js', 'mira-c-code.js'], go);
+}
+
+window.postExploit = function()
+{
+    setTimeout(function() //update the screen one last time...
+    {
+        eval.call(window, scriptCode);
+        done();
+    }, 100);
+};
+</script>
+<script src="utils.js"></script>
+<script src="int64.js"></script>
+<script src="ps4.js"></script>
+<button id="input1" onfocus="handle2()"></button>
+<button id="input2"></button>
+<button id="input3" onfocus="handle2()"></button>
+<select id="select1">
+<option value="value1">Value1</option>
 </select>
-</h1>
-<div style="text-align:center">
-<button  id="hen3" onmouseover="dicas2('e1')" onMouseOut="fora()" class="button" onclick="load_exploit_HEN3(); return false"><font size="4">HEN 2.2.6.1</font></button>
-<button  id="hen2" onmouseover="dicas2('e2')" onMouseOut="fora()" class="button" onclick="load_exploit_HEN2(); return false"><font size="4">HEN 2.2.5 </font></button>
-<button  id="hen" onmouseover="dicas2('e3')" onMouseOut="fora()" class="button" onclick="load_exploit_HEN(); return false"><font size="4" color="#6089f6">HEN 2.1.3b </font></button>
-<button  id="hen1" onmouseover="dicas2('e4')" onMouseOut="fora()" class="button" onclick="load_exploit_HEN1(); return false"><font size="4">HEN 2.1.3 </font></button>
-<button  id="mira" onmouseover="dicas2('e5')" onMouseOut="fora()" class="button" onclick="load_exploit_mira(); return false"><font size="4">Mira</font></button>
-<button id="miranof" onmouseover="dicas2('e6')" onMouseOut="fora()" class="button" onclick="load_exploit_miraUnoff(); return false"><font size="4">Mira NOf </font></button>
-<button id="mirashb" onmouseover="dicas2('e7')" onMouseOut="fora()" class="button" onclick="load_exploit_miranohb(); return false"><font size="4">Mira SHB</font></button>
-<h1 id=msgAuto2 style='font-size:30px;text-align:center;color:#6089f6;'>Auto-HEN <font id=msgAuto></font><font color="#ee596f"> ATIVADO</font></h1>
-</div>
-<br>
-<div style="text-align:center"><font size="3" color="#6089f6"><b><span id=passCounter></span></b> Sucesso(s)</font>&nbsp;&nbsp;/&nbsp;&nbsp;<font size="3" color="#ee596f"><b><span id=failCounter></span></b> Falha(s)</font></div>
-</div>
-<hr id="visivel" width="60%" size="1" color="#ff5757">
-<script>
-function DLProgress(e){Percent=(Math.round(e.loaded / e.total * 100));window.msgs.innerHTML="Instalando Cache Offline: <font color=\"#ee596f\">" + Percent + "%</font>";}
-function DisplayCacheProgress(){setTimeout(function(){window.msgs.innerHTML="<font color=\"#6089f6\">Instalação na Cache Concluída!</font>";},1000);setTimeout(function(){window.msgs.innerHTML="Agora saia usando o <font color=\"#ee596f\">circulo, desbilite a rede (se for usar em off)<br> e reinicie o PS4</font>. Ao iniciar o console, entre novamente no navegador.";},3000);}window.applicationCache.addEventListener("progress",DLProgress,false);window.applicationCache.oncached=function(e){DisplayCacheProgress();};window.applicationCache.onupdateready=function(e){DisplayCacheProgress();};</script>
-<script src="exp_common.js"></script>
-<script src="exp_jailbreak.js"></script>
-<h1 id=msgs style='font-size:25px;text-align:center;color:#6089f6'>PS4 MENU JAILBREAK <font style='color:#ee596f;'>6.72</font></h1>
-<hr width="60%" size="1" color="#ff5757">
-<div class="invisivel" style="text-align:center">
-<font size="3">Pressione o <font color="#ee596f"><b>CIRCULO<b></font> para sair.</font>
-<h1 style='font-size:25px;text-align:center;'><u><font color="#49c179">CARGAS ÚTEIS</font></u></h1>
-<button class="button" onmouseover="dicas2('cu1')" onMouseOut="fora()"  onclick="load_binloader(); return false"> Bin Loader </button>
-<button class="button" onmouseover="dicas2('cu2')" onMouseOut="fora()"  onclick="load_ftp(); return false"> FTP </button>
-<button class="button" onmouseover="dicas2('cu3')" onMouseOut="fora()"  onclick="load_dumper(); return false"> Dumper </button>
-<button class="button" onmouseover="dicas2('cu4')" onMouseOut="fora()"  onclick="load_linux(); return false"> Linux </button>
-<button class="button" onmouseover="dicas2('cu5')" onMouseOut="fora()"  onclick="load_app2usb(); return false"> App2USB </button>
-<button class="button" onmouseover="dicas2('cu6')" onMouseOut="fora()"  onclick="load_kerneldump(); return false"> Kernel Dumper </button>
-<button class="button" onmouseover="dicas2('cu7')" onMouseOut="fora()"  onclick="load_webrte(); return false"> WebRTE </button>
-<button class="button" onmouseover="dicas2('cu8')" onMouseOut="fora()"  onclick="load_ps4debug(); return false"> PS4debug </button>
-<br><br>
-<a href="http://ps4trainer.com/Trainer/index.html" target="_blank" onmouseover="dicas2('cu15')" onMouseOut="fora()" ><button class="button"> Trainer On </button></a>
-<button class="button" onmouseover="dicas2('cu9')" onMouseOut="fora()"  onclick="load_todex(); return false"> ToDEX </button>
-<button class="button" onmouseover="dicas2('cu10')" onMouseOut="fora()"  onclick="load_historyblock(); return false"> Hist. Blocker </button>
-<button class="button" onmouseover="dicas2('cu11')" onMouseOut="fora()"  onclick="load_updatesdisable(); return false"> Disable Upd </button>
-<button class="button" onmouseover="dicas2('cu12')" onMouseOut="fora()"  onclick="load_updatesenable(); return false"> Enable Upd </button>
-<button class="button" onmouseover="dicas2('cu13')" onMouseOut="fora()"  onclick="load_dbBackup(); return false"> DB Backup </button>
-<button class="button" onmouseover="dicas2('cu14')" onMouseOut="fora()"  onclick="load_dbRestore(); return false"> DB Restore </button>
-<br><br>
-<button class="button" onmouseover="dicas2('cu17')" onMouseOut="fora()"  onclick="load_SD_Backup(); return false"> Save Backup </button>
-<button class="button" onmouseover="dicas2('cu18')" onMouseOut="fora()"  onclick="load_SD_Restore(); return false"> Save Restore </button>
-<button class="button" onmouseover="dicas2('cu19')" onMouseOut="fora()"  onclick="load_avatarDumper(); return false"> Avatar </button>
-<button class="button"  onmouseover="dicas2('cu16')" onMouseOut="fora()"  onclick="load_fanthresh(); return false"> <font size=2px>temp. alvo</font></button><select id="tempC"  style="font-size:20px;height:35px;width:60px;background-color:transparent;color:#ee596f;border:2px solid #404040;"></select><font size=5px>&#176;C</font>
-<script>
-for(var i=35; i<=80; i++){
-    var select = document.getElementById("tempC");
-    var option = document.createElement("OPTION");
-	select.options.add(option);
-	option.text = i;
-	option.value = i;
-}
-tempC.value=70;
-</script>
-<br><br>
-<h1 style='font-size:25px;'><u><font color="#49c179">Dicas/Informações:</font></u>&nbsp
-<button id="d1" class="button" onclick="dicas('1')" onMouseOut="fora()" ; onmouseover="dicas2('1');">CACHE</button>
-<button id="d2" class="button" onclick="dicas('2')" onMouseOut="fora()" ; onmouseover="dicas2('2');">DICA 2</button>
-<button id="d3" class="button" onclick="dicas('3')" onMouseOut="fora()" ; onmouseover="dicas2('3');">DICA 3</button>
-<button id="d4" class="button" onclick="dicas('4')" onMouseOut="fora()" ; onmouseover="dicas2('4');">DICA 4</button>
-<button id="d5" class="button" onclick="dicas('5')" onMouseOut="fora()" ; onmouseover="dicas2('5');">DICA 5</button>
-<button id="d6" class="button" onclick="dicas('6')" onMouseOut="fora()" ; onmouseover="dicas2('6');">Informações</button>
-&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</h1>
-</div>
-<br>
-<div align="right"><font size="3" color="white" face="Verdana, Geneva, sans-serif"><b>FAMACEDO</b>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</div></font>
-<script>
-function dicas (dica) {
-switch (dica) {
-case '1':document.getElementById("msgs").innerHTML = 
-"<h1 style='color:#ffffff;font-size:15px;text-align:center;'>Limpeza e atualização da cache: Ao entrar no navegador quando aparecer o fundo branco, imediatamente, segure o circulo até aparecer a tela \"Páginas usadas confrequência\", clique no botão OPTIONS, selecione \"Excluir tudo\",confirme, OPTIONS novamente, selecione \"Histórico de navegação\", clique em OPTIONS, e \"Limpar histórico de navegação\", confirme, volte a \"Páginas usadas com frequência\", mais uma vez OPTIONS, agora selecione \"Configurações\" e \"Excluir cookies\",confirme, depois \"Limpar dados de sites\" e confirme, volte e digite o endereço do host e adicione aos favoritos.";break;
-case '2':document.getElementById("msgs").innerHTML = "Informações da dica 2";break;
-case '3':document.getElementById("msgs").innerHTML = "Informações da dica 3";break;
-case '4':document.getElementById("msgs").innerHTML = "Informações da dica 4";break;
-case '5':document.getElementById("msgs").innerHTML = "Informações da dica 5";break;
-case '6':document.getElementById("msgs").innerHTML = "Informações";break;
-default:document.getElementById("msgs").innerHTML = "erro";
-}
-}
-function dicas2 (dica) {
-switch (dica) {
-case '1':document.getElementById("msgs").innerHTML = 
-"Limpeza e Atualização da CACHE.";break;
-case '2':document.getElementById("msgs").innerHTML = "ainda será implementado";break;
-case '3':document.getElementById("msgs").innerHTML = "ainda será implementado";break;
-case '4':document.getElementById("msgs").innerHTML = "ainda será implementado";break;
-case '5':document.getElementById("msgs").innerHTML = "ainda será implementado";break;
-case '6':document.getElementById("msgs").innerHTML = "ainda será implementado";break;
-case 'e1':document.getElementById("msgs").innerHTML = "Ativa Jailbreak + <font style='color:#ee596f;'>HEN v2.2.6.1</font> (github do Mugiwara).";break;
-case 'e2':document.getElementById("msgs").innerHTML = "Ativa Jailbreak + <font style='color:#ee596f;'>HEN v2.2.5</font> (github do Mugiwara).";break;
-case 'e3':document.getElementById("msgs").innerHTML = "Ativa Jailbreak + <font style='color:#ee596f;'>HEN v2.1.3b</font> (github do Leeful).";break;
-case 'e4':document.getElementById("msgs").innerHTML = "Ativa Jailbreak + <font style='color:#ee596f;'>HEN v2.1.3</font> (github do Leeful).";break;
-case 'e5':document.getElementById("msgs").innerHTML = "Ativa Jailbreak + <font style='color:#ee596f;'>Mira</font> (host do Al Azif).";break;
-case 'e6':document.getElementById("msgs").innerHTML = "Ativa Jailbreak + <font style='color:#ee596f;'>Mira Não Oficial</font> (host do Al Azif).";break;
-case 'e7':document.getElementById("msgs").innerHTML = "Ativa Jailbreak + <font style='color:#ee596f;'>Mira Sem Homebrew</font> (host do Al Azif).";break;
-case 'cu1':document.getElementById("msgs").innerHTML = "Permite enviar arquivos .BIN para o PS4 pela porta 9021.";break;
-case 'cu2':document.getElementById("msgs").innerHTML = "Permite gerenciar os arquivos do PS4 pelo computador (FileZilla).";break;
-case 'cu3':document.getElementById("msgs").innerHTML = "Versão 1.8 (Mugiwara). Para cópia de jogos via USB.";break;
-case 'cu4':document.getElementById("msgs").innerHTML = "Carrega o Linux via USB (2gb de gráficos)";break;
-case 'cu5':document.getElementById("msgs").innerHTML = "Transfere jogos do console para um hd externo (exFAT).";break;
-case 'cu6':document.getElementById("msgs").innerHTML = "Permite copiar o kernel do PS4 via USB.";break;
-case 'cu7':document.getElementById("msgs").innerHTML = "Para Gerenciamento de trapaças (Botão \"TRAINER ON\").";break;
-case 'cu8':document.getElementById("msgs").innerHTML = "Para modificações do sistema (PS4 Reaper, trofeis, outros).";break;
-case 'cu15':document.getElementById("msgs").innerHTML = "Link para o site ps4trainer.com";break;
-case 'cu9':document.getElementById("msgs").innerHTML = "Modo de depuração do console (teste de devkit).";break;
-case 'cu10':document.getElementById("msgs").innerHTML = "Desabilita a última página usada no navegador PS4.";break;
-case 'cu11':document.getElementById("msgs").innerHTML = "Desabilita as atualizações automáticas de firmware.";break;
-case 'cu12':document.getElementById("msgs").innerHTML = "Habilita as atualizações automáticas de firmware.";break;
-case 'cu13':document.getElementById("msgs").innerHTML = "Faz backup do banco de dados e os jogos instalados via USB.";break;
-case 'cu14':document.getElementById("msgs").innerHTML = "Restaura um backup do banco de dados e os jogos via USB.";break;
-case 'cu16':document.getElementById("msgs").innerHTML = "Permite escolher temperatura de alvo do PS4 (padrão <font style='color:#ee596f;'>79°</font>C).";break;
-case 'cu17':document.getElementById("msgs").innerHTML = "Faz um backup dos saves dos jogos via USB.";break;
-case 'cu18':document.getElementById("msgs").innerHTML = "Restaura um backup dos saves dos jogos via USB.";break;
-case 'cu19':document.getElementById("msgs").innerHTML = "Gerenciamento de avatas via USB.";break;
-default:document.getElementById("msgs").innerHTML = "erro";
-}
-}
-
-function invisivel() {
-  var appCache = window.applicationCache;
-  if(appCache.status == appCache.DOWNLOADING){
-    var elementos = document.querySelectorAll(".invisivel");	
-	for (var i = 0; i < elementos.length; i++) {
-		elementos[i].style.display = 'none';	   
-    }
-  }	
-}	
-function statusCache(){
-var appCache = window.applicationCache;
-switch (appCache.status) {
-  case appCache.UNCACHED:
-    document.getElementById("msgs2").innerHTML = "UNCACHED";
-    var elementos = document.querySelectorAll(".invisivel");	
-	for (var i = 0; i < elementos.length; i++) {
-		elementos[i].style.display = 'none';	   
-    }
-    break;
-};	
-}
-	
-var selExploitStorage = localStorage.getItem("exploit");
-
-function selHen(){
-var select = document.getElementById('exp');
-var option = select.options[select.selectedIndex].text;
-select.options[select.selectedIndex].text=option;
-localStorage.setItem('exploit', select.selectedIndex);
-
-switch (option) {
-case 'Manual':document.getElementById("msgs").innerHTML = "Auto-HEN <font color=\"#ee596f\">DESATIVADO.</font> Os exploits serão executados <font color=\"#ee596f\">MANUALMENTE</font> na próxima vez que entrar no navegador.";break;
-case 'HEN 2261':document.getElementById("msgs").innerHTML = "O <font color=\"#ee596f\">HEN 2.2.6.1</font> será executado <font color=\"#ee596f\">AUTOMÁTICO</font> na próxima vez que entrar no navegador.";break;
-case 'HEN 225':document.getElementById("msgs").innerHTML = "O <font color=\"#ee596f\">HEN 2.2.5</font> será executado <font color=\"#ee596f\">AUTOMÁTICO</font> na próxima vez que entrar no navegador.";break;
-case 'HEN 213B':document.getElementById("msgs").innerHTML = "O <font color=\"#ee596f\">HEN 2.1.3b</font> será executado <font color=\"#ee596f\">AUTOMÁTICO</font> na próxima vez que entrar no navegador.";break;
-case 'HEN 213':document.getElementById("msgs").innerHTML = "O <font color=\"#ee596f\">HEN 2.1.3</font> será executado <font color=\"#ee596f\">AUTOMÁTICO</font> na próxima vez que entrar no navegador.";break;
-case 'Mira':document.getElementById("msgs").innerHTML = "O <font color=\"#ee596f\">Mira</font> será executado <font color=\"#ee596f\">AUTOMÁTICO</font> na próxima vez que entrar no navegador.";break;
-case 'Mira NOF':document.getElementById("msgs").innerHTML = "O <font color=\"#ee596f\">Mira Não Oficial</font> será executado <font color=\"#ee596f\">AUTOMÁTICO</font> na próxima vez que entrar no navegador.";break;
-case 'Mira SHB':document.getElementById("msgs").innerHTML = "O <font color=\"#ee596f\">Mira Sem HB</font> será executado <font color=\"#ee596f\">AUTOMÁTICO</font> na próxima vez que entrar no navegador.";break;
-default:document.getElementById("msgs").innerHTML = "Erro!";
-}
-}
-
-function pegarSel(){
-exp.selectedIndex = selExploitStorage;
-if (selExploitStorage==0 || selExploitStorage==undefined){
-document.getElementById('hen').style.display = 'inline';
-document.getElementById('hen1').style.display = 'inline';
-document.getElementById('hen2').style.display = 'inline';
-document.getElementById('hen3').style.display = 'inline';
-document.getElementById('mira').style.display = 'inline';
-document.getElementById('miranof').style.display = 'inline';
-document.getElementById('mirashb').style.display = 'inline';
-document.getElementById('msgAuto').style.display = 'none';
-document.getElementById('msgAuto2').style.display = 'none';
-}
-else{
-document.getElementById('hen').style.display = 'none';
-document.getElementById('hen1').style.display = 'none';
-document.getElementById('hen2').style.display = 'none';
-document.getElementById('hen3').style.display = 'none';
-document.getElementById('mira').style.display = 'none';
-document.getElementById('miranof').style.display = 'none';
-document.getElementById('mirashb').style.display = 'none';
-document.getElementById('msgAuto').style.display = 'inline';
-document.getElementById('msgAuto2').style.display = 'inline';
-}
-
-switch (selExploitStorage){
-case '1':document.getElementById("msgAuto").innerHTML = "2.2.6.1"; contar();break;	
-case '2':document.getElementById("msgAuto").innerHTML = "2.2.5"; contar();break;
-case '3':document.getElementById("msgAuto").innerHTML = "2.1.3b"; contar();break;	
-case '4':document.getElementById("msgAuto").innerHTML = "2.1.3"; contar();break;	
-case '5':document.getElementById("msgAuto").innerHTML = "Mira"; contar();break;	
-case '6':document.getElementById("msgAuto").innerHTML = "Mira Não Oficial"; contar();break;	
-case '7':document.getElementById("msgAuto").innerHTML = "Mirs Sem Homebrew"; contar();break;	
-}
-}
-
-function contar(){
-var tempo = 10;
-var downloadTimer = setInterval(function(){
-document.getElementById("msgs").innerHTML = "Na tentativa de <font color=\"#ee596f\">evitar KP,</font> o exploit vai ser executado em <font color=\"#ee596f\">" + tempo + "</font> segundos.";
-tempo -= 1;
-if(tempo <= -1){
-clearInterval(downloadTimer);
-switch (selExploitStorage){
-case '1':load_exploit_HEN3(); return false; break;	
-case '2':load_exploit_HEN2(); return false; break;
-case '3':load_exploit_HEN(); return false; break;	
-case '4':load_exploit_HEN1(); return false; break;	
-case '5':load_exploit_mira(); return false; break;	
-case '6':load_exploit_miraUnoff(); return false; break;	
-case '7':load_exploit_miranohb(); return false; break;	
-}}}, 1000);
-}
-		
-if (localStorage.passcount == null) localStorage.passcount=0;
-window.passCounter.innerHTML=localStorage.passcount;
-if (localStorage.failcount == null) localStorage.failcount=0;
-window.failCounter.innerHTML=localStorage.failcount;
-	
-function load_exploit_HEN(){
-msgs.innerHTML="<h1 style='color:#ee596f;font-size:25px;text-align:center;'>Exploit ... HEN ...</h1>";
-LoadedMSG="<h1 style='color:#6089f6;font-size:25px;text-align:center;'>Exploit ✔ HEN ✔</h1>";
-ExploitMira="HEN";MiraSRC="pl_HEN.js";
-setTimeout(jailbreak,500);
-}
-
-function load_exploit_HEN1(){
-msgs.innerHTML="<h1 style='color:#ee596f;font-size:25px;text-align:center;'>Exploit ... HEN ...</h1>";
-LoadedMSG="<h1 style='color:#6089f6;font-size:25px;text-align:center;'>Exploit ✔ HEN ✔</h1>";
-ExploitMira="HEN";MiraSRC="pl_HEN1.js";
-setTimeout(jailbreak,500);
-}
-
-function load_exploit_HEN2(){
-msgs.innerHTML="<h1 style='color:#ee596f;font-size:25px;text-align:center;'>Exploit ... HEN ...</h1>";
-LoadedMSG="<h1 style='color:#6089f6;font-size:25px;text-align:center;'>Exploit ✔ HEN ✔</h1>";
-ExploitMira="HEN";MiraSRC="pl_HEN2.js";
-setTimeout(jailbreak,500);
-}
-
-function load_exploit_HEN3(){
-msgs.innerHTML="<h1 style='color:#ee596f;font-size:25px;text-align:center;'>Exploit ... HEN ...</h1>";
-LoadedMSG="<h1 style='color:#6089f6;font-size:25px;text-align:center;'>Exploit ✔ HEN ✔</h1>";
-ExploitMira="HEN";MiraSRC="pl_HEN3.js";
-setTimeout(jailbreak,500);
-}
-
-function load_exploit_mira(){
-msgs.innerHTML="<h1 style='color:#ee596f;font-size:25px;text-align:center;'>Exploit ... Mira ...</h1>";
-LoadedMSG="<h1 style='color:#6089f6;font-size:25px;text-align:center;'>Exploit ✔ Mira ✔</h1>";ExploitMira="yes";MiraSRC="pl_mira.js";
-setTimeout(jailbreak,500);
-}
-
-function load_exploit_miranohb(){
-msgs.innerHTML="<h1 style='color:#ee596f;font-size:25px;text-align:center;'>Exploit ... Mira...</h1>";
-LoadedMSG="<h1 style='color:#6089f6;font-size:25px;text-align:center;'>Exploit ✔ Mira ✔</h1>";ExploitMira="yes";MiraSRC="pl_miranohb.js";
-setTimeout(jailbreak,500);
-}
-
-function load_exploit_miraUnoff(){
-msgs.innerHTML="<h1 style='color:#ee596f;font-size:25px;text-align:center;'>Exploit ... Mira ...</h1>";
-LoadedMSG="<h1 style='color:#6089f6;font-size:25px;text-align:center;'>Exploit ✔ Mira ✔</h1>";ExploitMira="yes";MiraSRC="pl_mira_unofficial.js";
-setTimeout(jailbreak,500);
-}
-
-function load_binloader(){
-msgs.innerHTML="<h1 style='font-size:25px;text-align:center;'>Loading Bin Loader ...</h1>";
-LoadedMSG="Send Payload To Port 9021";
-var script = document.createElement('script');script.src = "exp_loader.js";document.getElementsByTagName('head')[0].appendChild(script);
-}
-
-function load_HEN(){
-msgs.innerHTML="<h1 style='font-size:25px;text-align:center;'>Loading HEN ...</h1>";
-LoadedMSG="HEN Loaded ✔";
-var script = document.createElement('script');script.src = "pl_HEN.js";document.getElementsByTagName('head')[0].appendChild(script);
-var script = document.createElement('script');script.src = "exp_loader.js";document.getElementsByTagName('head')[0].appendChild(script);
-}
-
-function load_mira(){
-msgs.innerHTML="<h1 style='font-size:25px;text-align:center;'>Loading Mira ...</h1>";
-LoadedMSG="Mira Loaded ✔";
-var script = document.createElement('script');script.src = "pl_mira.js";document.getElementsByTagName('head')[0].appendChild(script);
-var script = document.createElement('script');script.src = "exp_loader.js";document.getElementsByTagName('head')[0].appendChild(script);
-}
-
-function load_mira_unofficial(){
-msgs.innerHTML="<h1 style='font-size:25px;text-align:center;'>Loading Mira ...</h1>";
-LoadedMSG="Mira Loaded ✔";
-var script = document.createElement('script');script.src = "pl_mira_unofficial.js";document.getElementsByTagName('head')[0].appendChild(script);
-var script = document.createElement('script');script.src = "exp_loader.js";document.getElementsByTagName('head')[0].appendChild(script);
-}
-
-function load_ftp(){
-msgs.innerHTML="<h1 style='font-size:25px;text-align:center;'>Loading FTP ...</h1>";
-LoadedMSG="FTP Loaded ✔";
-var script = document.createElement('script');script.src = "pl_ftp.js";document.getElementsByTagName('head')[0].appendChild(script);
-var script = document.createElement('script');script.src = "exp_loader.js";document.getElementsByTagName('head')[0].appendChild(script);
-}
-
-function load_dumper(){
-msgs.innerHTML="<h1 style='font-size:25px;text-align:center;'>Loading Dumper ...</h1>";
-LoadedMSG="Dumper Loaded ✔";
-var script = document.createElement('script');script.src = "pl_dumper.js";document.getElementsByTagName('head')[0].appendChild(script);
-var script = document.createElement('script');script.src = "exp_loader.js";document.getElementsByTagName('head')[0].appendChild(script);
-}
-
-function load_linux(){
-msgs.innerHTML="<h1 style='font-size:25px;text-align:center;'>Loading Linux ...</h1>";
-LoadedMSG="Linux Loaded ✔";
-var script = document.createElement('script');script.src = "pl_linux.js";document.getElementsByTagName('head')[0].appendChild(script);
-var script = document.createElement('script');script.src = "exp_loader.js";document.getElementsByTagName('head')[0].appendChild(script);
-}
-
-function load_app2usb(){
-msgs.innerHTML="<h1 style='font-size:25px;text-align:center;'>Loading AppToUSB ...</h1>";
-LoadedMSG="AppToUSB Loaded ✔";
-var script = document.createElement('script');script.src = "pl_app2usb.js";document.getElementsByTagName('head')[0].appendChild(script);
-var script = document.createElement('script');script.src = "exp_loader.js";document.getElementsByTagName('head')[0].appendChild(script);
-}
-
-function load_kerneldump(){
-msgs.innerHTML="<h1 style='font-size:25px;text-align:center;'>Loading Kernel Dumper ...</h1>";
-LoadedMSG="Kernel Dumper Loaded ✔";
-var script = document.createElement('script');script.src = "pl_kernelDumper.js";document.getElementsByTagName('head')[0].appendChild(script);
-var script = document.createElement('script');script.src = "exp_loader.js";document.getElementsByTagName('head')[0].appendChild(script);
-}
-
-function load_webrte(){
-msgs.innerHTML="<h1 style='font-size:25px;text-align:center;'>Loading WebRTE ...</h1>";
-LoadedMSG="WebRTE Loaded ✔";
-var script = document.createElement('script');script.src = "pl_WebRTE.js";document.getElementsByTagName('head')[0].appendChild(script);
-var script = document.createElement('script');script.src = "exp_loader.js";document.getElementsByTagName('head')[0].appendChild(script);
-}
-
-function load_ps4debug(){
-msgs.innerHTML="<h1 style='font-size:25px;text-align:center;'>Loading PS4Debug ...</h1>";
-LoadedMSG="PS4Debug Loaded ✔";
-var script = document.createElement('script');script.src = "pl_ps4debug.js";document.getElementsByTagName('head')[0].appendChild(script);
-var script = document.createElement('script');script.src = "exp_loader.js";document.getElementsByTagName('head')[0].appendChild(script);
-}
-
-
-function load_todex(){
-msgs.innerHTML="<h1 style='font-size:25px;text-align:center;'>Loading ToDEX ...</h1>";
-LoadedMSG="ToDEX Loaded ✔";
-var script = document.createElement('script');script.src = "pl_ToDEX.js";document.getElementsByTagName('head')[0].appendChild(script);
-var script = document.createElement('script');script.src = "exp_loader.js";document.getElementsByTagName('head')[0].appendChild(script);
-}
-
-function load_historyblock(){
-msgs.innerHTML="<h1 style='font-size:25px;text-align:center;'>Loading History Blocker ...</h1>";
-LoadedMSG="History Blocker Loaded ✔";
-var script = document.createElement('script');script.src = "pl_historyBlocker.js";document.getElementsByTagName('head')[0].appendChild(script);
-var script = document.createElement('script');script.src = "exp_loader.js";document.getElementsByTagName('head')[0].appendChild(script);
-}
-
-function load_updatesdisable(){
-msgs.innerHTML="<h1 style='font-size:25px;text-align:center;'>Loading Disable Updates ...</h1>";
-LoadedMSG="Disable Updates Loaded ✔";
-var script = document.createElement('script');script.src = "pl_updatesDisable.js";document.getElementsByTagName('head')[0].appendChild(script);
-var script = document.createElement('script');script.src = "exp_loader.js";document.getElementsByTagName('head')[0].appendChild(script);
-}
-
-function load_updatesenable(){
-msgs.innerHTML="<h1 style='font-size:25px;text-align:center;'>Loading Enable Updates ...</h1>";
-LoadedMSG="Enable Updates Loaded ✔";
-var script = document.createElement('script');script.src = "pl_updatesEnable.js";document.getElementsByTagName('head')[0].appendChild(script);
-var script = document.createElement('script');script.src = "exp_loader.js";document.getElementsByTagName('head')[0].appendChild(script);
-}
-
-function load_dbBackup(){
-msgs.innerHTML="<h1 style='font-size:25px;text-align:center;'>Loading DB Backup ...</h1>";
-LoadedMSG="DB Backup Loaded ✔";
-var script = document.createElement('script');script.src = "pl_dbBackup.js";document.getElementsByTagName('head')[0].appendChild(script);
-var script = document.createElement('script');script.src = "exp_loader.js";document.getElementsByTagName('head')[0].appendChild(script);
-}
-
-function load_dbRestore(){
-msgs.innerHTML="<h1 style='font-size:25px;text-align:center;'>Loading DB Restore ...</h1>";
-LoadedMSG="DB Restore Loaded ✔";
-var script = document.createElement('script');script.src = "pl_dbRestore.js";document.getElementsByTagName('head')[0].appendChild(script);
-var script = document.createElement('script');script.src = "exp_loader.js";document.getElementsByTagName('head')[0].appendChild(script);
-}
-
-
-function load_SD_Backup(){
-msgs.innerHTML="<h1 style='font-size:25px;text-align:center;'>Loading Save Backup ...</h1>";
-LoadedMSG="Save Backup Loaded ✔";
-var script = document.createElement('script');script.src = "pl_SD_Backup.js";document.getElementsByTagName('head')[0].appendChild(script);
-var script = document.createElement('script');script.src = "exp_loader.js";document.getElementsByTagName('head')[0].appendChild(script);
-}
-
-function load_SD_Restore(){
-msgs.innerHTML="<h1 style='font-size:25px;text-align:center;'>Loading Save Restore ...</h1>";
-LoadedMSG="Save Restore Loaded ✔";
-var script = document.createElement('script');script.src = "pl_SD_Restore.js";document.getElementsByTagName('head')[0].appendChild(script);
-var script = document.createElement('script');script.src = "exp_loader.js";document.getElementsByTagName('head')[0].appendChild(script);
-}
-
-function load_avatarDumper(){
-msgs.innerHTML="<h1 style='color:#ee596f;font-size:25px;text-align:center;'>Carregando Dumper do Avatar ...</h1>";
-LoadedMSG="<h1 style='color:#6089f6;font-size:25px;text-align:center;'>Carregado Dumper do Avatar ✔</h1>";
-var script = document.createElement('script');script.src = "pl_avatarDumper.js";document.getElementsByTagName('head')[0].appendChild(script);
-var script = document.createElement('script');script.src = "exp_loader.js";document.getElementsByTagName('head')[0].appendChild(script);
-}
-
-function load_fanthresh(){
-msgs.innerHTML="<h1 style='color:#ee596f;font-size:25px;text-align:center;'>Enviando temperatura alvo...</h1>";
-LoadedMSG="<h1 style='color:#6089f6;font-size:25px;text-align:center;'>Temperatura alvo enviada✔</h1>";fanTemp=tempC.value;//alert(fanTemp);
-var script = document.createElement('script');script.src = "pl_fanthresh.js";document.getElementsByTagName('head')[0].appendChild(script);
-var script = document.createElement('script');script.src = "exp_loader.js";document.getElementsByTagName('head')[0].appendChild(script);
-}
-</script>
 </body>
 </html>
