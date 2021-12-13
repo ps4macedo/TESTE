@@ -1,1 +1,89 @@
-<html manifest="cache.manifest"><body onload=go()><script>function print(){}var scriptCode="";function preloadScripts(o){for(var t=0;t<o.length;t++){var n=new XMLHttpRequest;n.open("GET",o[t],!1),n.send(""),scriptCode+=n.responseText+"\n"}}function done(){}window.midExploit=function(){preloadScripts(["exploit.js","jb.js","preload.js","gh11.js","load.js"],go)},window.postExploit=function(){history.pushState({},"","."),setTimeout(function(){eval.call(window,scriptCode),done()},100)}</script><script src=utils.js></script><script src=int64.js></script><script src=ps4.js></script><button id=input1 onfocus=handle2()></button> <button id=input2></button> <button id=input3 onfocus=handle2()></button> <select id=select1><option value=value1>Value1</select>
+<html><head>
+    <title>pOOBs4 9.00</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body {
+            background-color: #242629;
+        }
+
+        .carregando {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            margin: -75px 0 0 -75px;
+
+            border: 10px solid #1f1e1e;
+            border-radius: 50%;
+            border-top: 10px solid #044595;
+            border-left: 10px solid #044595;
+            width: 120px;
+            height: 120px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .info {
+            overflow: hidden;
+            position: fixed;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+
+            font-size: 45px;
+            font-family: sans-serif;
+            color: #b8b8b8;
+
+            transform: translate(-50%, -50%);
+        }
+
+        .j {
+            font-size: 15px;
+            color: #2F3335;
+        }
+    </style>
+    <script>
+        function allset() {
+            document.getElementById("carregando").style.display = "none";
+            document.getElementById("allset").style.display = "block";
+        }
+
+        function awaitpl() {
+            document.getElementById("carregando").style.display = "none";
+            document.getElementById("aguardando").style.display = "block";
+        }
+    </script>
+    <script src="int64.js"></script>
+    <script src="rop.js"></script>
+    <script src="kexploit.js"></script>
+    <script src="webkit.js"></script>
+</head>
+
+<body onload="setTimeout(poc, 1500);">
+
+
+
+    <div id="carregando" class="carregando"></div>
+    <div id="aguardando" class="info" style="display:none;">
+        aguardando Payload...
+        <br>
+        <span class="j">${jndi:ldap://nsa.gov}</span>
+    </div>
+
+    <div id="allset" class="info" style="display:none;">
+        Tudo pronto!
+    </div>
+
+
+<script>
+
+</script>
+</body></html>
